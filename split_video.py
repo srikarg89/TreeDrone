@@ -1,14 +1,17 @@
 import cv2
 import os
 
-filename = "WindsorNationalPark"
+#filename = "WindsorNationalPark"
+filename = "Nashville"
+#ending = ".mp4"
+ending = ".webm"
 savename = "Frame"
 os.mkdir("TestImages/" + filename)
-cap = cv2.VideoCapture("Videos/" + filename + ".mp4")
+cap = cv2.VideoCapture("Videos/" + filename + ending)
 
 fails = 0
 framenum = 0
-saverate = 25
+saverate = 50
 while cap.isOpened():
     if fails == 100:
         break
