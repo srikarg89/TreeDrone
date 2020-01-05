@@ -2,9 +2,10 @@ import cv2
 import os
 
 #filename = "WindsorNationalPark"
-filename = "Nashville"
-#ending = ".mp4"
-ending = ".webm"
+#filename = "Nashville"
+filename = 'Nearby'
+ending = ".mp4"
+#ending = ".webm"
 savename = "Frame"
 os.mkdir("TestImages/" + filename)
 cap = cv2.VideoCapture("Videos/" + filename + ending)
