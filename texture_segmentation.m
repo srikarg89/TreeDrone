@@ -1,4 +1,5 @@
-function [Aseg1, Aseg2, Aseg3] = texture_segmentation(fname)
+%function [Aseg1, Aseg2, Aseg3] = texture_segmentation(fname)
+function texture_segmentation(fname)
     %A = imread('drone1.png');
     A = imread(fname);
     A = imresize(A,0.25);
