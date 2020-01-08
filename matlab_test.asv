@@ -1,0 +1,6 @@
+function B = matlab_test()
+    A = imread('TestImages/Nearby/Frame17_undistorted.png');
+    A = imresize(A, 0.25);
+    disp(A(0,0);
+    B = 1;
+end

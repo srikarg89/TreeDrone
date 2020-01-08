@@ -1,6 +1,6 @@
-function Aseg1 = texture_segmentation()
+function [Aseg1, Aseg2, Aseg3] = texture_segmentation(fname)
     %A = imread('drone1.png');
-    A = imread('TestImages/Nearby/Frame17_undistorted.png');
+    A = imread(fname);
     A = imresize(A,0.25);
     [BW,maskedRGBImage] = createMask(A);
     %subplot(1,3,1);imshow(A);title('Original Image');

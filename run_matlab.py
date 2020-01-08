@@ -4,13 +4,11 @@ import numpy as np
 
 eng = matlab.engine.start_matlab()
 print("Whatsup")
-tf = eng.texture_segmentation()
-print(type(tf))
-print(len(tf))
-print(len(tf[0]))
-print(len(tf[0][0]))
-print(tf.size)
-np_a = np.array(tf._data.tolist())
-np_a = np_a.reshape(tf.size)
-print(np_a.shape)
-np.save('imgfile', np_a)
+ret = eng.texture_segmentation('TestImages/Nearby/Frame17_undistorted.png', nargout=3)
+
+for i,img in enumerate(ret):
+    print(img.size)
+    np_a = np.array(img._data.tolist())
+    np_a = np_a.reshape(img.size[::-1]).transpose()
+    print(np_a.shape)
+    np.save('imgfile' + str(i + 1), np_a)
