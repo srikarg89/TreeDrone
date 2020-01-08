@@ -39,8 +39,8 @@ X = bsxfun(@minus, X, mean(X));
 X = bsxfun(@rdivide,X,std(X));
 coeff = pca(X);
 
-BW_stretched = reshape(BW,numRows*numCols,1);
-X(repmat(~BW_stretched,[1 26])) = -100;
+BW_stretched = reshape(BW,numRows*numCols,1), 
+X(repmat(~BW_stre,[1 1 3])) = 0;
 
 % trying to apply the mask to feature2d, but if u look below kmeans is run
 % on X, not feature2d, so i actually need to apply mask to x, but dunno how
@@ -48,40 +48,24 @@ feature2DImage = reshape(X*coeff(:,1),numRows,numCols);
 figure
 imshow(feature2DImage,[])
 
-L = kmeans(X,3,'Replicates',5);
+%maskedFeatureImage = feature2DImage;
+%maskedFeatureImage(repmat(~BW,[1 1])) = 0;
+%figure
+%imshow(maskedFeatureImage, [])
+
+
+L = kmeans(X,2,'Replicates',5);
 L = reshape(L,[numRows numCols]);
 figure
 imshow(label2rgb(L))
 Aseg1 = zeros(size(A),'like',A);
 Aseg2 = zeros(size(A),'like',A);
-BW1 = L == 1;
 BW2 = L == 2;
-BW3 = L == 1;
-BW1 = repmat(BW1,[1 1 3]);
 BW2 = repmat(BW2,[1 1 3]);
-BW3 = repmat(BW3,[1 1 3]);
-Aseg1(BW1) = A(BW1);
-Aseg2(BW2) = A(BW2);
-Aseg3(BW3) = A(BW3);
-
-%multi = cat(3,Aseg1, Aseg2, Aseg3);
-
-%subplot(1,4,1);imshow(A);title('Original Image');
-%subplot(1,4,2);imshow(Aseg1);title('Kmeans 1');
-%subplot(1,4,3);imshow(Aseg2);title('Kmeans 2');
-%subplot(1,4,4);imshow(Aseg3);title('Kmeans 3');
+Aseg1(BW2) = A(BW2);
+Aseg2(~BW2) = A(~BW2);
 figure
-imshow(Aseg1);
-figure
-imshow(Aseg2);
-figure
-imshow(Aseg3);
-%montage(multi);
-%imshowpair(Aseg1,Aseg2,Aseg3,'montage');
-
-
-
-
+imshowpair(Aseg1,Aseg2,'montage');
 
 function [BW,maskedRGBImage] = createMask(RGB) 
     % Convert RGB image to HSV image

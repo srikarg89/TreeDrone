@@ -39,8 +39,12 @@ def undistort(img_path, balance=0.0, dim2=None, dim3=None):
     return undistorted_img
 
 if __name__ == '__main__':
-    folder = 'Masks/RealTest/'
-    filenames = ['Frame54.png', 'Frame60.png', 'Frame62.png']
-    for filename in filenames:
-        newimg = undistort(folder + filename)
-        cv2.imwrite(folder + filename, newimg)
+    folder = 'TestImages/Nearby/'
+    filename = 'Frame17.png'
+    newname = 'Frame17_undistorted.png'
+    newimg = undistort(folder + filename)
+    cv2.imwrite(folder + newname, newimg)
+#    filenames = ['Frame54.png', 'Frame60.png', 'Frame62.png']
+#    for filename in filenames:
+#        newimg = undistort(folder + filename)
+#        cv2.imwrite(folder + filename, newimg)
