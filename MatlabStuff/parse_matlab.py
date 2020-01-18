@@ -13,9 +13,9 @@ img1 = img1.astype('uint8')
 img2 = img2.astype('uint8')
 img3 = img3.astype('uint8')
 
-img1 = cv2.cvtColor(img1, cv2.COLOR_RGB2BGR)
-img2 = cv2.cvtColor(img2, cv2.COLOR_RGB2BGR)
-img3 = cv2.cvtColor(img3, cv2.COLOR_RGB2BGR)
+img1 = cv2.cvtColor(img1, cv2.COLOR_RGB2GRAY)
+img2 = cv2.cvtColor(img2, cv2.COLOR_RGB2GRAY)
+img3 = cv2.cvtColor(img3, cv2.COLOR_RGB2GRAY)
 
 cv2.imwrite(imgfile_dir + "Image1.png", img1)
 cv2.imwrite(imgfile_dir + "Image2.png", img2)
