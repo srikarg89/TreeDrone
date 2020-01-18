@@ -1,12 +1,13 @@
-function [Aseg1, Aseg2, Aseg3] = texture_segmentation(fname)
+function X = texture_segmentation(fname)
+%function [Aseg1, Aseg2, Aseg3] = texture_segmentation(fname)
 %function texture_segmentation(fname)
-    %A = imread('drone1.png');
+%    A = imread('drone1.png');
     A = imread(fname);
     A = imresize(A,0.25);
     [BW,maskedRGBImage] = createMask(A);
-    %subplot(1,3,1);imshow(A);title('Original Image');
-    %subplot(1,3,2);imshow(BW);title('Mask');
-    %subplot(1,3,3);imshow(maskedRGBImage);title('Filtered Image');
+%    subplot(1,3,1);imshow(A);title('Original Image');
+%    subplot(1,3,2);imshow(BW);title('Mask');
+%    subplot(1,3,3);imshow(maskedRGBImage);title('Filtered Image');
 
     imageSize = size(A);
     numRows = imageSize(1);
@@ -19,37 +20,37 @@ function [Aseg1, Aseg2, Aseg3] = texture_segmentation(fname)
     figure
     imshow(feature2DImage,[])
 
-    L = kmeans(X,3,'Replicates',5);
-    L = reshape(L,[numRows numCols]);
-    figure
-    imshow(label2rgb(L))
-    Aseg1 = zeros(size(A),'like',A);
-    Aseg2 = zeros(size(A),'like',A);
-    Aseg3 = zeros(size(A),'like',A);
-    BW1 = L == 1;
-    BW2 = L == 2;
-    BW3 = L == 3;
-    BW1 = repmat(BW1,[1 1 3]);
-    BW2 = repmat(BW2,[1 1 3]);
-    BW3 = repmat(BW3,[1 1 3]);
-    Aseg1(BW1) = A(BW1);
-    Aseg2(BW2) = A(BW2);
-    Aseg3(BW3) = A(BW3);
+%    L = kmeans(X,3,'Replicates',5);
+%    L = reshape(L,[numRows numCols]);
+%    figure
+%    imshow(label2rgb(L))
+%    Aseg1 = zeros(size(A),'like',A);
+%    Aseg2 = zeros(size(A),'like',A);
+%    Aseg3 = zeros(size(A),'like',A);
+%    BW1 = L == 1;
+%    BW2 = L == 2;
+%    BW3 = L == 3;
+%    BW1 = repmat(BW1,[1 1 3]);
+%    BW2 = repmat(BW2,[1 1 3]);
+%    BW3 = repmat(BW3,[1 1 3]);
+%    Aseg1(BW1) = A(BW1);
+%    Aseg2(BW2) = A(BW2);
+%    Aseg3(BW3) = A(BW3);
 
-    %multi = cat(3,Aseg1, Aseg2, Aseg3);
+%    multi = cat(3,Aseg1, Aseg2, Aseg3);
 
-    %subplot(1,4,1);imshow(A);title('Original Image');
-    %subplot(1,4,2);imshow(Aseg1);title('Kmeans 1');
-    %subplot(1,4,3);imshow(Aseg2);title('Kmeans 2');
-    %subplot(1,4,4);imshow(Aseg3);title('Kmeans 3');
-    figure
-    imshow(Aseg1);
-    figure
-    imshow(Aseg2);
-    figure
-    imshow(Aseg3);
-    %montage(multi);
-    %imshowpair(Aseg1,Aseg2,Aseg3,'montage');
+%    subplot(1,4,1);imshow(A);title('Original Image');
+%    subplot(1,4,2);imshow(Aseg1);title('Kmeans 1');
+%    subplot(1,4,3);imshow(Aseg2);title('Kmeans 2');
+%    subplot(1,4,4);imshow(Aseg3);title('Kmeans 3');
+%    figure
+%    imshow(Aseg1);
+%    figure
+%    imshow(Aseg2);
+%    figure
+%    imshow(Aseg3);
+%    montage(multi);
+%    imshowpair(Aseg1,Aseg2,Aseg3,'montage');
 end
 
 function [X, feature2DImage] = runGabor(A)
