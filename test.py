@@ -1,32 +1,19 @@
 import cv2
 
-img = cv2.imread("C:/Users/Srikar/Downloads/testimg3.jpg")
-
-global mouseX, mouseY
-mouseX, mouseY = 0, 0
-
-def draw_circle(event,x,y,flags,param):
-    global mouseX,mouseY
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        cv2.circle(img,(x,y),10,(255,0,0),2)
-        mouseX,mouseY = x,y
-
-cv2.namedWindow('image')
-cv2.setMouseCallback('image',draw_circle)
-
-print(img.shape)
-img = cv2.resize(img, (3840 // 4, 2160 // 4))
-
-while(1):
-    cv2.imshow('image',img)
-    k = cv2.waitKey(20) & 0xFF
-    if k == 27:
-        break
-    elif k == ord('a'):
-        print(mouseX, mouseY)
-    elif k == ord('q'):
+vid = cv2.VideoCapture('D:/video/20200112-160256-704278-0.avi')
+framecount = 0
+while vid.isOpened():
+    ret, frame = vid.read()
+    if ret == False:
+        continue
+    framecount += 1
+    if framecount % 20 == 0:
+        print(framecount)
+    if framecount == 200:
+        cv2.imshow("Image", cv2.resize(frame, (3840 // 6, 2160 // 6)))
+        cv2.imwrite("TestFrame.jpg", frame)
+        cv2.waitKey(0)
         cv2.destroyAllWindows()
         break
 
-# 149 = 10 in.
-# 169 = 11.3 in.
+vid.close()

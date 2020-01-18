@@ -1,2 +1,0 @@
-Height	Length		Height	Width
-38      94		    40     	37.7
