@@ -4,7 +4,7 @@ import numpy as np
 import matlab.engine
 from skimage.filters import gabor
 
-PROCESS_DIM = (1280, 720)
+PROCESS_DIM = (1280 // 2, 720 // 2)
 DISPLAY_DIM = (1280 // 3, 720 // 3)
 LOW_GREEN = [0,0,0]
 HIGH_GREEN = [255,255,255]
@@ -75,8 +75,9 @@ def inrange(img, range1, range2):
 def preprocess(img_path):
     img = cv2.imread(img_path)
     img = resize(img, PROCESS_DIM)
+    print(img.shape)
     hsv = bgr2hsv(img)
-    new = inrange(hsv, (0,140,0), (40,200,255))
+    new = inrange(hsv, (255*.05,0,0), (255*.5,255,255))
     new = cv2.cvtColor(new, cv2.COLOR_GRAY2BGR)
     cv2.imwrite('PreprocessedMap.png', new)
 
@@ -91,3 +92,5 @@ def main():
     preprocess('Map.png')
     run_gabor_filter_matlab('PreprocessedMap.png')
 
+if __name__ == '__main__':
+    main()

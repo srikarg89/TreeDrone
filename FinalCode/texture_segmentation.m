@@ -4,6 +4,7 @@ function X = texture_segmentation(fname)
 end
 
 function [X, feature2DImage] = runGabor(A)
+    Agray = rgb2gray(A);
     imageSize = size(A);
     numRows = imageSize(1);
     numCols = imageSize(2);

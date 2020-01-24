@@ -1,5 +1,10 @@
-A = imread('Frame142.png');
+%A = imread('../Masks/Westgate/stitched.png');
+A = imread('../Masks/Westgate/Frame99.png');
+%A = imread('../RealCVImages/Undistorted/Frame142.png');
+%A = imread('../RealCVImages/Undistorted/Frame58.png');
 A = imresize(A,0.25);
+
+ori = A(:,:,:);
 
 [BW,maskedA] = createMask(A);
 figure
@@ -55,11 +60,11 @@ L = reshape(L,[numRows numCols]);
 figure
 imshow(label2rgb(L))
 for i = 1:NUM_KMEANS
-    Aseg = zeros(size(A),'like',A);
+    Aseg = zeros(size(ori),'like',ori);
     BW1 = L == i;
     BW1 = repmat(BW1,[1 1 3]);
-    Aseg(BW1) = A(BW1);
-    Aseg(repmat(BW, [1 1])) = 0;
+    Aseg(BW1) = ori(BW1);
+    Aseg(repmat(~BW, [1 1 3])) = 0;
     figure
     imshow(Aseg);
 end
@@ -83,5 +88,4 @@ function [BW,maskedRGBImage] = createMask(RGB)
     maskedRGBImage = RGB;
     % Set background pixels where BW is false to zero.
     maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
-    
 end
