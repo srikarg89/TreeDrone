@@ -1,8 +1,10 @@
 %A = imread('../Masks/Westgate/stitched.png');
-A = imread('../Masks/Westgate/Frame99.png');
+A = imread('../Masks/Westgate/stitched_shrunk.png');
+%A = imread('../Masks/Westgate/Frame99.png');
 %A = imread('../RealCVImages/Undistorted/Frame142.png');
 %A = imread('../RealCVImages/Undistorted/Frame58.png');
-A = imresize(A,0.25);
+
+%A = imresize(A,0.25);
 
 ori = A(:,:,:);
 

@@ -81,8 +81,10 @@ def stitch_colored(foldername):
 
     count = np.zeros((final_height + 1, final_width + 1, 3))
     visited = np.zeros((final_height + 1, final_width + 1, 3))
+    total = [[[] for j in range(final_width)] for i in range(final_height)]
 
     for img_data in data:
+        print(img_data)
         filename, x, y, scaleX, scaleY, angle = img_data
         x *= scaleX
         y *= scaleY
@@ -101,10 +103,65 @@ def stitch_colored(foldername):
 #        newCoords = (coords[0], coords[1])
         visited[newCoords] += 1
         count[newCoords] += img[coords]
+#        for i in range(len(newCoords[0])):
+#            total[newCoords[0][i]][newCoords[1][i]].append(img[coords[i]].tolist())
     
     # Avoid divide by 0 error that occurs when area isn't surveyed completely
     notfound = np.where(visited == 0)
     visited[notfound] = 1
+
+    overlapping = np.where((visited > 1).all(axis=2))
+    overlapping = {(a,b) for a,b in zip(overlapping[0], overlapping[1])}
+    total = [[[] for j in range(final_width)] for i in range(final_height)]
+
+    for img_data in data:
+        print(img_data)
+        filename, x, y, scaleX, scaleY, angle = img_data
+        x *= scaleX
+        y *= scaleY
+        x = int(x)
+        y = int(y)
+        img = cv2.imread(foldername + filename)
+        img = imutils.rotate_bound(img, angle)
+        img_height, img_width, _ = img.shape
+        h = img_height
+        w = img_width
+        coords = np.where((img != [0,0,0]).all(axis=2))
+        newCoords = (coords[0] + y - h // 2, coords[1] + x - w // 2)
+
+        newCoords = {(a,b) for a,b in zip(newCoords[0], newCoords[1])}
+
+        overlappingCoords = overlapping.intersection(newCoords)
+        
+        for a,b in overlappingCoords:
+            (c,d) = (a - y + h // 2, b - x + w // 2)
+            total[a][b].append(img[c][d].tolist())
+
+    all = 0
+    totaldiff = 0
+    for i in range(len(total)):
+        for j in range(len(total[0])):
+            arr = total[i][j]
+            if len(arr) == 0:
+                continue
+
+            all += 1
+            minvals = [255, 255, 255]
+            maxvals = [0, 0, 0]
+            for pixel in arr:
+                minvals[0] = min(minvals[0], pixel[0])
+                minvals[1] = min(minvals[1], pixel[1])
+                minvals[2] = min(minvals[2], pixel[2])
+                maxvals[0] = max(maxvals[0], pixel[0])
+                maxvals[1] = max(maxvals[1], pixel[1])
+                maxvals[2] = max(maxvals[2], pixel[2])
+            
+            diff = maxvals[0] + maxvals[1] + maxvals[2] - minvals[0] - minvals[1] - minvals[2]
+            totaldiff += diff
+
+    print(all, totaldiff)
+
+
 
     # Get percent of detections for each pixel and count the ones above the SURETY rate to be trees
     stitched = count / visited
@@ -112,6 +169,7 @@ def stitch_colored(foldername):
 #    _, stitched = cv2.threshold(stitched, 255 * SURETY, 255, cv2.THRESH_BINARY)
     cv2.imwrite(foldername + 'stitched.png', stitched)
 
+    print(np.array(total).shape)
 
 # Use this function to create a test case that mimics masks from drone footage
 #generate_testmask('Masks/RealTest/', 12, 25, 20)
